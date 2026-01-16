@@ -1,0 +1,19 @@
+FROM debian:latest
+
+RUN apt-get update && apt-get install -y \
+    curl \
+    gnupg \
+    procps \
+    ca-certificates \
+    && rm -rf /var/lib/apt/lists/*
+
+COPY config/gpg/teleport.gpg /usr/share/keyrings/teleport-archive-keyring.gpg
+COPY config/sources.list.d/teleport.list /etc/apt/sources.list.d/teleport.list
+
+RUN apt-get update && apt-get install -y teleport
+
+RUN mkdir -p /var/lib/teleport /etc/teleport
+
+COPY config/teleport/teleport-client.yaml /etc/teleport.yaml
+
+CMD ["sh", "-c", "teleport start --config=/etc/teleport.yaml --nodename=client-$(hostname) --token=labtoken123 --auth-server=server:3025"]

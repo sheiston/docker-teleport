@@ -1,0 +1,48 @@
+services:
+  server:
+    container_name: server
+    build:
+      context: .
+      dockerfile: dockerfile.server
+    ports:
+      - 443:443
+    networks:
+      - network-teleport
+
+  client-01:
+    container_name: client-01
+    hostname: client-01
+    build:
+      context: .
+      dockerfile: dockerfile.client
+    tty: true
+    depends_on:
+      - server
+    networks:
+      - network-teleport
+
+  # client-02:
+  #   container_name: client-02
+  #   hostname: client-02
+  #   build:
+  #     context: .
+  #     dockerfile: dockerfile.client
+  #   tty: true
+  #   depends_on:
+  #     - server
+  #   networks:
+  #     - network-teleport
+
+  client-03:
+    container_name: client-03
+    hostname: client-03
+    build:
+      context: .
+      dockerfile: dockerfile-sem-teleport.client
+    tty: true
+    networks:
+      - network-teleport
+
+networks:
+  network-teleport:
+    driver: bridge

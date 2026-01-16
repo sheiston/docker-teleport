@@ -1,0 +1,30 @@
+FROM debian:latest
+
+RUN apt-get update && apt-get install -y \
+    curl \
+    gnupg \
+    procps \
+    ca-certificates
+
+COPY config/gpg/teleport.gpg /usr/share/keyrings/teleport-archive-keyring.gpg
+
+COPY config/sources.list.d/teleport.list /etc/apt/sources.list.d/teleport.list
+
+RUN apt-get update
+
+RUN apt-get install teleport
+
+RUN mkdir -p /var/lib/teleport /etc/teleport
+
+COPY config/key/teleport.crt /var/lib/teleport/teleport.pem
+COPY config/key/teleport.key /var/lib/teleport/teleport.key
+
+RUN teleport configure -o /etc/teleport.yaml \
+    --cluster-name=debian-server \
+    --public-addr=debian-server:443 \
+    --cert-file=/var/lib/teleport/teleport.pem \
+    --key-file=/var/lib/teleport/teleport.key
+
+COPY config/teleport/teleport-server.yaml /etc/teleport.yaml
+
+CMD ["teleport", "start", "--config=/etc/teleport.yaml"]

@@ -1,0 +1,15 @@
+version: v3
+
+teleport:
+  data_dir: /var/lib/teleport
+
+auth_service:
+  enabled: no
+
+proxy_service:
+  enabled: no
+
+ssh_service:
+  enabled: yes
+  labels:
+    env: lab

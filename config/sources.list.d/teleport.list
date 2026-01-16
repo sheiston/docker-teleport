@@ -1,0 +1,1 @@
+deb [signed-by=/usr/share/keyrings/teleport-archive-keyring.gpg] https://deb.releases.teleport.dev/ stable main
