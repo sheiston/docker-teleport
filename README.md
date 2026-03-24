@@ -29,7 +29,7 @@ https://debian-server:443/web/invite/c0d23b99e84f625213e9ce97b583e10f
 
 NOTE: Make sure debian-server:443 points at a Teleport proxy which users can access.
 ```
-### Uai Uai Uai Uai
+
 ### Ajustando a URL
 
 Altere o endereço `debian-server` para `localhost` na URL gerada:
